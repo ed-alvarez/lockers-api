@@ -1,0 +1,5 @@
+name,product,location,price,size,locker_number,mode,status,mac_address,hardware_type,price_required,group
+CSV Linka 1,Test Product 1,Main Street,Hourly,S,1,rental,available,00:00:00:00:00,linka,true,Sales
+CSV Linka 2,Test Product 2,Main Street,Hourly,S,2,rental,available,00:00:00:00:00,linka,true,Sales
+CSV Linka 3,Test Product 3,Main Street,Hourly,S,3,rental,available,00:00:00:00:00,linka,true,Sales
+CSV Linka 4,Test Product 4,Main Street,Hourly,S,4,rental,available,00:00:00:00:00,linka,true,Sales

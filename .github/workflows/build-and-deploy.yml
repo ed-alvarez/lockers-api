@@ -1,0 +1,95 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Select the environment
+        required: true
+        options:
+          - dev
+          - qa
+          - staging
+          - production
+
+jobs:
+  build-and-deploy:
+    name: Deploying latest version to ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Update Kubernetes context
+        run: |
+          aws eks update-kubeconfig \
+          --name koloni-k8s-cluster-${{ github.event.inputs.environment }}
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: koloni-api
+          IMAGE_TAG: ${{ github.event.inputs.environment }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Setup Kubernetes CLI
+        run: |
+          curl -LO \
+          https://dl.k8s.io/release/v1.28.2/bin/linux/amd64/kubectl \
+          && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+      - name: Deploy to Kubernetes
+        run: kubectl rollout restart deployment/koloni-api
+
+      - name: Wait for deployment to finish
+        run: |
+          while true; do
+            POD=$(kubectl get pods \
+              --field-selector=status.phase=Pending \
+              -o jsonpath='{.items[*].metadata.name}' \
+              | grep -o koloni-api || true)
+
+            if [ -n "$POD" ]; then
+              echo "Waiting for pod $POD to start..."
+              sleep 10
+            else
+              echo "Pod is running."
+              break
+            fi
+          done
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": ":rocket: Deployments finished for **Lockers API** @ Environment: ${{ github.event.inputs.environment }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": ":x: Deployments failed for **Lockers API** @ Environment: ${{ github.event.inputs.environment }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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

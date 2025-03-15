@@ -1,0 +1,44 @@
+name: Test Slack Webhook
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Select the environment
+        required: true
+        options:
+          - dev
+          - qa
+          - staging
+          - production
+
+jobs:
+  build-and-deploy:
+    name: Deploying latest version to ${{ github.event.inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": ":rocket: Deployments finished for **Lockers API** @ Environment: ${{ github.event.inputs.environment }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": ":x: Deployments failed for **Lockers API** @ Environment: ${{ github.event.inputs.environment }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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

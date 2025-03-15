@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: koloni-api
+    build:
+      context: .
+      dockerfile: ./dev.Dockerfile
+    ports:
+      - "5002:5000"
+  db:
+    container_name: koloni-db
+    build:
+      context: .
+      dockerfile: ./db.Dockerfile
+    ports:
+      - "5432:5432"
+  cache:
+    container_name: koloni-redis
+    image: redis:7.2-alpine3.18
+    ports:
+      - "6379:6379"

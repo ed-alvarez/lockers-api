@@ -1,0 +1,3 @@
+id,name,address,custom_id,hidden,latitude,longitude,contact_email,contact_phone
+,Test Location CSV,someplace,12345,1,23.13,23.14,,,
+,Test Location CSV 2,someplace,12345,1,23.13,23.14,,,

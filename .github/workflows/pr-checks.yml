@@ -1,0 +1,15 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches: [dev]
+
+jobs:
+  pr-checks:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout
+      - uses: pre-commit/action@v3.0.0
+        name: Check for linting errors

@@ -1,0 +1,4 @@
+id,name,auto_repair,auto_report,auto_maintenance,transaction_number
+,Broken,y,y,y,0
+,New,y,y,y,0
+,Used,y,y,y,0

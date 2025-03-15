@@ -1,0 +1,2 @@
+id,name,description,active,currency,amount,billing_type,billing_period,number_of_payments,membership_type,value
+,Test Membership CSV, Some description,yes,usd,12,recurring,month,0,percentage,10

@@ -1,0 +1,58 @@
+{
+  "Cmd": "App.Locks.Get",
+  "Data": {
+    "Locks": [
+      {
+        "Group": 0,
+        "Id": "01101689-2205060012-01",
+        "IsConnected": true,
+        "Label": "",
+        "LastStatusUpdate": "2023-06-30T14:57:57.524Z",
+        "LockerGroupRecordId": "",
+        "Matching": 0,
+        "Mode": "FreeLocker",
+        "Number": 0,
+        "Status": {
+          "Alarm": true,
+          "Blocked": false,
+          "Enabled": true,
+          "LastAction": "ManuallyLocked",
+          "LastUse": "2023-06-30T14:57:56Z",
+          "LockStatus": "Locked",
+          "Maintenance": false,
+          "PendingOperation": false,
+          "Rented": false,
+          "UID": ""
+        },
+        "UpdateState": "IDLE"
+      },
+      {
+        "Group": 0,
+        "Id": "01101689-2205060012-02",
+        "IsConnected": true,
+        "Label": "",
+        "LastStatusUpdate": "2023-06-30T18:57:15.121Z",
+        "LockerGroupRecordId": "",
+        "Matching": 0,
+        "Mode": "FreeLocker",
+        "Number": 0,
+        "Status": {
+          "Alarm": false,
+          "Blocked": false,
+          "Enabled": true,
+          "LastAction": "ManuallyLocked",
+          "LastUse": "2023-06-30T18:57:14Z",
+          "LockStatus": "Locked",
+          "Maintenance": false,
+          "PendingOperation": false,
+          "Rented": false,
+          "UID": ""
+        },
+        "UpdateState": "IDLE"
+      }
+    ]
+  },
+  "MT": "Rsp",
+  "State": 0,
+  "TID": 1336
+}

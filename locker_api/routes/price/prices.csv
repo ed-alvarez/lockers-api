@@ -1,0 +1,2 @@
+id,name,amount,currency,prorated,card_on_file,unit,unit_amount,price_type
+,Test Size CSV,24,usd,yes,yes,hour,2,pay_per_time

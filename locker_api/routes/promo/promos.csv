@@ -1,0 +1,2 @@
+id,name,code,amount,discount_type,start_time,end_time
+,Test Promo CSV,CVSCVS,25,percentage,2023-10-02T13:06:00.000Z,2023-11-15T13:06:00.000Z
